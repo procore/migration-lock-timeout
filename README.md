@@ -27,7 +27,7 @@ And that's all! Now every `up` migration will execute
 ```sql
 SET LOCAL lock_timeout = '5s'
 ```
-before your migration mode runs
+before your migration code runs
 
 ## Future Plans
 - ability to specify timeout in each migration
