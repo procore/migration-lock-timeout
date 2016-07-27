@@ -1,8 +1,7 @@
-# Migration::Lock::Timeout
+# MigrationLockTimeout
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/migration/lock/timeout`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+A Ruby gems that adds a lock timeout to all Active Record migrations in your
+Ruby on Rails project. Currently only supports PostgreSQL
 
 ## Installation
 
@@ -12,17 +11,29 @@ Add this line to your application's Gemfile:
 gem 'migration-lock-timeout'
 ```
 
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install migration-lock-timeout
-
 ## Usage
 
-TODO: Write usage instructions here
+Configure the default lock timeout in a Rails initializer
+
+```ruby
+#config/initializers/migration_lock_timeout.rb
+
+MigrationLockTimeout.configure |config|
+  config.default_lock_timeout = 5 #timeout in secods
+end
+```
+
+And that's all! Now every `up` migration will execute
+```sql
+SET LOCAL lock_timeout = '5s'
+```
+before your migration mode runs
+
+## Future Plans
+- ability to specify timeout in each migration
+- ability to work without a default
+- ability to disable default timeout in each migration
+- specs
 
 ## Development
 

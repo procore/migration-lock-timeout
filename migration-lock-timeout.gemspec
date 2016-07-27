@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'migration/lock/timeout/version'
+require 'migration_lock_timeout/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "migration-lock-timeout"
-  spec.version       = Migration::Lock::Timeout::VERSION
+  spec.version       = MigrationLockTimeout::VERSION
   spec.authors       = ["Brad Urani"]
   spec.email         = ["bradurani@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = "Ruby gem that adds a lock timeout to Active Record migrations"
+  spec.description   = "Ruby gem that automatically adds a lock timeout to all Active Record migrations"
+  spec.homepage      = "http://github.com/bradurani/migration-lock-timeout"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
@@ -30,4 +30,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.12"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
+
+  spec.add_runtime_dependency "rails", ">= 4.0", "< 5.0"
 end
