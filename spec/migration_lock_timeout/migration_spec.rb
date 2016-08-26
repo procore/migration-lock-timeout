@@ -27,6 +27,12 @@ RSpec.describe ActiveRecord::Migration do
       migration.migrate(:up)
     end
 
+    it 'does not use timeout for down migration' do
+      migration = AddFoo.new
+      expect(ActiveRecord::Base.connection).not_to receive(:execute)
+      migration.migrate(:down)
+    end
+
     it 'allows migration to run if no default timeout set' do
       MigrationLockTimeout.config = nil
       migration = AddFoo.new
