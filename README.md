@@ -27,26 +27,67 @@ And that's all! Now every `up` migration will execute
 ```sql
 SET LOCAL lock_timeout = '5s'
 ```
-before your migration code runs
+inside the migration transaction before your migration code runs. No lock
+timeout will be used for the `down` migration.
 
-## Future Plans
-- ability to specify timeout in each migration
-- ability to work without a default
-- ability to disable default timeout in each migration
-- specs
+## Disabling
 
-## Development
+You can disable the lock timeout be using:
+```ruby
+  class AddFoo < ActiveRecord::Migration
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+    disable_lock_timeout!
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+    def change
+      create_table :foo do |t|
+        t.timestamps
+      end
+    end
+  end
+```
+
+## Custom lock timeout
+
+You can change the duration of the lock timeout be using:
+```ruby
+  class AddBar < ActiveRecord::Migration
+    set_lock_timeout 10
+    def change
+      create_table :bar do |t|
+        t.timestamps
+      end
+    end
+  end
+```
+Additionally, if you have not set a default lock timeout, you can use this to
+set a timeout for a particular transaction.
+
+## disable_ddl_transaction
+
+If you use `disable_ddl_transaction!`, no lock timeout will occur
+```ruby
+  class AddMonkey < ActiveRecord::Migration
+    disable_ddl_transaction!
+    def change
+      create_table :monkey do |t|
+        t.timestamps
+      end
+    end
+  end
+```
+
+## Running the spec
+
+To run the specs you must have [PostgreSQL](https://www.postgresql.org/)
+installed. Create a database called `migration_lock_timeout_test` and set the
+environment variables `POSTGRES_DB_USERNAME` and `POSTGRES_DB_PASSWORD` then run
+`rspec`
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/migration-lock-timeout. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/procore/migration-lock-timeout. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
