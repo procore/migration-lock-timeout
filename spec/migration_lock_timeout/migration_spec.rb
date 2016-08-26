@@ -42,34 +42,63 @@ RSpec.describe ActiveRecord::Migration do
         migration.migrate(:up)
       end
     end
-  end
 
-  describe 'up / down migration' do
+    describe 'up / down migration' do
 
-    class AddBar < ActiveRecord::Migration
-      def up
-        create_table :bar do |t|
-          t.timestamps
+      class AddBar < ActiveRecord::Migration
+        def up
+          create_table :bar do |t|
+            t.timestamps
+          end
+        end
+
+        def down
+          drop_table :bar
         end
       end
 
-      def down
-        drop_table :bar
+      it 'runs migrate up with timeout' do
+        migration = AddBar.new
+        expect(ActiveRecord::Base.connection).to receive(:execute).
+          with("SET LOCAL lock_timeout = '5s'")
+        migration.migrate(:up)
+      end
+
+      it 'does not use timeout for down migration' do
+        migration = AddBar.new
+        expect(ActiveRecord::Base.connection).not_to receive(:execute)
+        migration.migrate(:down)
       end
     end
 
-    it 'runs migrate up with timeout' do
-      migration = AddBar.new
-      expect(ActiveRecord::Base.connection).to receive(:execute).
-        with("SET LOCAL lock_timeout = '5s'")
-      migration.migrate(:up)
+    describe 'disable lock timeout' do
+
+      class AddBaz < ActiveRecord::Migration
+        disable_lock_timeout!
+        def up
+          create_table :baz do |t|
+            t.timestamps
+          end
+        end
+
+        def down
+          drop_table :baz
+        end
+      end
+
+      it 'runs migrate up without timeout' do
+        migration = AddBaz.new
+        expect(ActiveRecord::Base.connection).not_to receive(:execute).
+          with("SET LOCAL lock_timeout = '5s'")
+        migration.migrate(:up)
+      end
+
+      it 'does not use timeout for down migration' do
+        migration = AddBaz.new
+        expect(ActiveRecord::Base.connection).not_to receive(:execute)
+        migration.migrate(:down)
+      end
     end
 
-    it 'does not use timeout for down migration' do
-      migration = AddBar.new
-      expect(ActiveRecord::Base.connection).not_to receive(:execute)
-      migration.migrate(:down)
-    end
   end
-
 end
