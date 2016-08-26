@@ -108,7 +108,7 @@ The gem is available as open source under the terms of the [MIT License](http://
   width="250px"
 />
 
-Handcuffs is maintained by Procore Technologies.
+Migration Lock Timeout is maintained by Procore Technologies.
 
 Procore - building the software that builds the world.
 
