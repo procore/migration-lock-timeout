@@ -1,9 +1,9 @@
 module MigrationLockTimeout
   module LockManager
 
-    def migrate
-      if (MigrationLockTimeout.default_timeout)
-        execute "SET LOCAL lock_timeout = '#{MigrationLockTimeout.default_timeout}s'"
+    def migrate(direction)
+      if MigrationLockTimeout.try(:config).try(:default_timeout)
+        execute "SET LOCAL lock_timeout = '#{MigrationLockTimeout.config.default_timeout}s'"
       end
       self
     end

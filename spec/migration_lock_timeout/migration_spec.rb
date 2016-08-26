@@ -1,18 +1,8 @@
+require './spec_helper'
 require 'active_record'
+require_relative '../../lib/migration_lock_timeout'
 
 RSpec.describe ActiveRecord::Migration do
-
-  before(:all) do
-    ActiveRecord::Base.establish_connection(
-      adapter: "postgresql",
-      database: "migration_lock_timeout_test",
-      username: 'procore_db',
-      password: ENV['POSTGRES_DB_PASSWORD'],
-      host: 'localhost'
-    )
-    @conn = ActiveRecord::Base.connection
-  end
-
 
   describe '#migrate' do
 
@@ -24,9 +14,23 @@ RSpec.describe ActiveRecord::Migration do
       end
     end
 
-    it 'runs migrate' do
+    before(:each) do
+      MigrationLockTimeout.configure do |config|
+        config.default_timeout = 5
+      end
+    end
+
+    it 'runs migrate up with timeout' do
       migration = AddFoo.new
-      migration.exec_migration(@conn, :up)
+      expect(ActiveRecord::Base.connection).to receive(:execute).
+        with("SET LOCAL lock_timeout = '5s'")
+      migration.migrate(:up)
+    end
+
+    it 'allows migration to run if no default timeout set' do
+      MigrationLockTimeout.config = nil
+      migration = AddFoo.new
+      migration.migrate(:up)
     end
   end
 end
