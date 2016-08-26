@@ -8,7 +8,7 @@ module MigrationLockTimeout
       if !timeout_disabled && direction == :up && time && !disable_ddl_transaction
         execute "SET LOCAL lock_timeout = '#{time}s'"
       end
-      self
+      super
     end
   end
 end
