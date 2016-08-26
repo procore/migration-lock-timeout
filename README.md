@@ -1,7 +1,11 @@
-# MigrationLockTimeout
+# Migration Lock Timeout
 
-A Ruby gems that adds a lock timeout to all Active Record migrations in your
-Ruby on Rails project. Currently only supports PostgreSQL
+Migration Lock Timeout is a Ruby gem that adds a lock timeout to all Active
+Record migrations in your Ruby on Rails project. A lock timeout sets a timeout
+on how long PostgreSQL will wait to acquire a lock on tables being altered
+before failing and rolling back. This prevents migrations from creating
+additional lock contention that can take down your site when it's under heavy
+load. Migration Lock Timeout currently only supports [PostgreSQL](https://www.postgresql.org/)
 
 ## Installation
 
@@ -32,7 +36,7 @@ timeout will be used for the `down` migration.
 
 ## Disabling
 
-You can disable the lock timeout be using:
+You can disable the lock timeout by using:
 ```ruby
   class AddFoo < ActiveRecord::Migration
 
@@ -48,7 +52,7 @@ You can disable the lock timeout be using:
 
 ## Custom lock timeout
 
-You can change the duration of the lock timeout be using:
+You can change the duration of the lock timeout by using:
 ```ruby
   class AddBar < ActiveRecord::Migration
     set_lock_timeout 10
@@ -60,9 +64,9 @@ You can change the duration of the lock timeout be using:
   end
 ```
 Additionally, if you have not set a default lock timeout, you can use this to
-set a timeout for a particular transaction.
+set a timeout for a particular migration.
 
-## disable_ddl_transaction
+## disable_ddl_transaction!
 
 If you use `disable_ddl_transaction!`, no lock timeout will occur
 ```ruby
