@@ -88,8 +88,7 @@ RSpec.describe ActiveRecord::Migration do
 
       it 'runs migrate up without timeout' do
         migration = AddBaz.new
-        expect(ActiveRecord::Base.connection).not_to receive(:execute).
-          with("SET LOCAL lock_timeout = '5s'")
+        expect(ActiveRecord::Base.connection).not_to receive(:execute)
         migration.migrate(:up)
       end
 
