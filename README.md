@@ -23,13 +23,13 @@ Configure the default lock timeout in a Rails initializer
 #config/initializers/migration_lock_timeout.rb
 
 MigrationLockTimeout.configure |config|
-  config.default_lock_timeout = 5 #timeout in secods
+  config.default_lock_timeout = 5 #timeout in seconds
 end
 ```
 
 And that's all! Now every `up` migration will execute
-```sql
-SET LOCAL lock_timeout = '5s'
+```psql
+SET LOCAL lock_timeout = '5s';
 ```
 inside the migration transaction before your migration code runs. No lock
 timeout will be used for the `down` migration.
@@ -55,7 +55,9 @@ You can disable the lock timeout by using:
 You can change the duration of the lock timeout by using:
 ```ruby
   class AddBar < ActiveRecord::Migration
+
     set_lock_timeout 10
+
     def change
       create_table :bar do |t|
         t.timestamps
@@ -71,7 +73,9 @@ set a timeout for a particular migration.
 If you use `disable_ddl_transaction!`, no lock timeout will occur
 ```ruby
   class AddMonkey < ActiveRecord::Migration
+
     disable_ddl_transaction!
+
     def change
       create_table :monkey do |t|
         t.timestamps
@@ -80,7 +84,7 @@ If you use `disable_ddl_transaction!`, no lock timeout will occur
   end
 ```
 
-## Running the spec
+## Running the specs
 
 To run the specs you must have [PostgreSQL](https://www.postgresql.org/)
 installed. Create a database called `migration_lock_timeout_test` and set the
