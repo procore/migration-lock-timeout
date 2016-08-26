@@ -99,5 +99,35 @@ RSpec.describe ActiveRecord::Migration do
       end
     end
 
+
+    describe 'change lock timeout' do
+
+      class AddBurn < ActiveRecord::Migration
+        set_lock_timeout 10
+        def up
+          create_table :burn do |t|
+            t.timestamps
+          end
+        end
+
+        def down
+          drop_table :burn
+        end
+      end
+
+      it 'runs migrate up without timeout' do
+        migration = AddBurn.new
+        expect(ActiveRecord::Base.connection).to receive(:execute).
+          with("SET LOCAL lock_timeout = '10s'")
+        migration.migrate(:up)
+      end
+
+      it 'does not use timeout for down migration' do
+        migration = AddBurn.new
+        expect(ActiveRecord::Base.connection).not_to receive(:execute)
+        migration.migrate(:down)
+      end
+    end
+
   end
 end
