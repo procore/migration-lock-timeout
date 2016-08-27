@@ -4,4 +4,5 @@ machine:
     postgres_db_username: ubuntu
     postgres_db_password: ''
 database:
-  override: echo 'using circle_test'
+  override: 
+    - echo 'using circle_test'
