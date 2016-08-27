@@ -1,8 +1,8 @@
 machine:
   environment:
-    postgres_db_database: circle_test
-    postgres_db_username: ubuntu
-    postgres_db_password: ''
+    POSTGRES_DB_DATABASE: circle_test
+    POSTGRES_DB_USERNAME: ubuntu
+    POSTGRES_DB_PASSWORD: ''
 database:
   override: 
     - echo 'using circle_test'
