@@ -3,3 +3,5 @@ machine:
     postgres_db_database: circle_test
     postgres_db_username: ubuntu
     postgres_db_password: ''
+database:
+  override:
