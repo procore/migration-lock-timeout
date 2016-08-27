@@ -1,2 +1,8 @@
+machine:
+  environment:
+    POSTGRES_DB_DATABASE: circle_test
+    POSTGRES_DB_USERNAME: ubuntu
+    POSTGRES_DB_PASSWORD: ''
 database:
-  override: psql -U postgres -tc "SELECT 1 FROM pg_database WHERE datname = 'migration_lock_timeout_test'" | grep -q 1 || psql -U postgres -c "CREATE DATABASE migration_lock_timeout_test"
+  override: 
+    - echo 'using circle_test'

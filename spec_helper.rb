@@ -4,7 +4,7 @@ RSpec.configure do |config|
   config.before(:suite) do
     ActiveRecord::Base.establish_connection(
       adapter: "postgresql",
-      database: "migration_lock_timeout_test",
+      database: ENV["POSTGRES_DB_DATABASE"] || "migration_lock_timeout_test",
       username: ENV['POSTGRES_DB_USERNAME'],
       password: ENV['POSTGRES_DB_PASSWORD'],
       host: 'localhost'
