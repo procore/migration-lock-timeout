@@ -1,6 +1,6 @@
 require './spec_helper'
 require 'active_record'
-require_relative '../../lib/migration_lock_timeout'
+require_relative '../../lib/migration-lock-timeout'
 
 RSpec.describe ActiveRecord::Migration do
 
