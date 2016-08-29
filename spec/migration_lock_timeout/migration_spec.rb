@@ -31,9 +31,11 @@ RSpec.describe ActiveRecord::Migration do
         migration.migrate(:up)
       end
 
-      it 'does not use timeout for down migration' do
+      it 'runs migrate down with timeout' do
         migration = AddFoo.new
-        expect(ActiveRecord::Base.connection).not_to receive(:execute).
+        expect(ActiveRecord::Base.connection).to receive(:execute).
+          with("DROP TABLE \"foo\"")
+        expect(ActiveRecord::Base.connection).to receive(:execute).
           with("SET LOCAL lock_timeout = '5s'")
         migration.migrate(:down)
       end
@@ -70,9 +72,11 @@ RSpec.describe ActiveRecord::Migration do
         migration.migrate(:up)
       end
 
-      it 'does not use timeout for down migration' do
+      it 'runs migrate down with timeout' do
         migration = AddBar.new
-        expect(ActiveRecord::Base.connection).not_to receive(:execute).
+        expect(ActiveRecord::Base.connection).to receive(:execute).
+          with("DROP TABLE \"bar\"")
+        expect(ActiveRecord::Base.connection).to receive(:execute).
           with("SET LOCAL lock_timeout = '5s'")
         migration.migrate(:down)
       end
@@ -124,7 +128,7 @@ RSpec.describe ActiveRecord::Migration do
         end
       end
 
-      it 'runs migrate up without timeout' do
+      it 'runs migrate up with timeout' do
         migration = AddBurn.new
         expect(ActiveRecord::Base.connection).to receive(:execute).
           with("CREATE TABLE \"burn\" (\"id\" serial primary key, \"created_at\" timestamp, \"updated_at\" timestamp) ")
@@ -133,9 +137,11 @@ RSpec.describe ActiveRecord::Migration do
         migration.migrate(:up)
       end
 
-      it 'does not use timeout for down migration' do
+      it 'runs migrate down with timeout' do
         migration = AddBurn.new
-        expect(ActiveRecord::Base.connection).not_to receive(:execute).
+        expect(ActiveRecord::Base.connection).to receive(:execute).
+          with("DROP TABLE \"burn\"")
+        expect(ActiveRecord::Base.connection).to receive(:execute).
           with("SET LOCAL lock_timeout = '10s'")
         migration.migrate(:down)
       end
@@ -166,7 +172,9 @@ RSpec.describe ActiveRecord::Migration do
       end
 
       it 'does not use timeout for down migration' do
-        migration = AddBar.new
+        migration = AddMonkey.new
+        expect(ActiveRecord::Base.connection).to receive(:execute).
+          with("DROP TABLE \"monkey\"")
         expect(ActiveRecord::Base.connection).not_to receive(:execute).
           with("SET LOCAL lock_timeout = '5s'")
         migration.migrate(:down)
@@ -219,7 +227,7 @@ RSpec.describe ActiveRecord::Migration do
         end
       end
 
-      it 'runs migrate up without timeout' do
+      it 'runs migrate up with timeout' do
         migration = AddBurn.new
         expect(ActiveRecord::Base.connection).to receive(:execute).
           with("CREATE TABLE \"burn\" (\"id\" serial primary key, \"created_at\" timestamp, \"updated_at\" timestamp) ")
@@ -228,9 +236,11 @@ RSpec.describe ActiveRecord::Migration do
         migration.migrate(:up)
       end
 
-      it 'does not use timeout for down migration' do
+      it 'runs migrate down with timeout' do
         migration = AddBurn.new
-        expect(ActiveRecord::Base.connection).not_to receive(:execute).
+        expect(ActiveRecord::Base.connection).to receive(:execute).
+          with("DROP TABLE \"burn\"")
+        expect(ActiveRecord::Base.connection).to receive(:execute).
           with("SET LOCAL lock_timeout = '10s'")
         migration.migrate(:down)
       end
