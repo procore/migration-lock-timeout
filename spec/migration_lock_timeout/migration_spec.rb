@@ -172,7 +172,7 @@ RSpec.describe ActiveRecord::Migration do
       end
 
       it 'does not use timeout for down migration' do
-        migration = AddBar.new
+        migration = AddMonkey.new
         expect(ActiveRecord::Base.connection).to receive(:execute).
           with("DROP TABLE \"monkey\"")
         expect(ActiveRecord::Base.connection).not_to receive(:execute).
