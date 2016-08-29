@@ -29,7 +29,7 @@ MigrationLockTimeout.configure |config|
 end
 ```
 
-And that's all! Now every `up` migration will execute
+And that's all! Now every migration will execute
 ```psql
 SET LOCAL lock_timeout = '5s';
 ```
