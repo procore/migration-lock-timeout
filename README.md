@@ -24,7 +24,7 @@ Configure the default lock timeout in a Rails initializer
 ```ruby
 #config/initializers/migration_lock_timeout.rb
 
-MigrationLockTimeout.configure |config|
+MigrationLockTimeout.configure do |config|
   config.default_lock_timeout = 5 #timeout in seconds
 end
 ```
