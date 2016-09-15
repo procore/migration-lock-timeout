@@ -1,6 +1,0 @@
-test:
-  adapter: postgresql
-  username: procore_db
-  password: <%= ENV['POSTGRES_DB_PASSWORD'] %>
-  database: migration_lock_timeout_test
- 
