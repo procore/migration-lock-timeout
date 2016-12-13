@@ -25,9 +25,11 @@ RSpec.describe ActiveRecord::Migration do
       it 'runs migrate up with timeout' do
         migration = AddFoo.new
         expect(ActiveRecord::Base.connection).to receive(:execute).
-          with("CREATE TABLE \"foo\" (\"id\" serial primary key, \"created_at\" timestamp, \"updated_at\" timestamp) ")
+          with(/CREATE TABLE/).
+          and_call_original
         expect(ActiveRecord::Base.connection).to receive(:execute).
-          with("SET LOCAL lock_timeout = '5s'")
+          with("SET LOCAL lock_timeout = '5s'").
+          and_call_original
         migration.migrate(:up)
       end
 
@@ -64,9 +66,11 @@ RSpec.describe ActiveRecord::Migration do
       it 'runs migrate up with timeout' do
         migration = AddBar.new
         expect(ActiveRecord::Base.connection).to receive(:execute).
-          with("CREATE TABLE \"bar\" (\"id\" serial primary key, \"created_at\" timestamp, \"updated_at\" timestamp) ")
+          with(/CREATE TABLE/).
+          and_call_original
         expect(ActiveRecord::Base.connection).to receive(:execute).
-          with("SET LOCAL lock_timeout = '5s'")
+          with("SET LOCAL lock_timeout = '5s'").
+          and_call_original
         migration.migrate(:up)
       end
 
@@ -127,9 +131,11 @@ RSpec.describe ActiveRecord::Migration do
       it 'runs migrate up with timeout' do
         migration = AddBurn.new
         expect(ActiveRecord::Base.connection).to receive(:execute).
-          with("CREATE TABLE \"burn\" (\"id\" serial primary key, \"created_at\" timestamp, \"updated_at\" timestamp) ")
+          with(/CREATE TABLE/).
+          and_call_original
         expect(ActiveRecord::Base.connection).to receive(:execute).
-          with("SET LOCAL lock_timeout = '10s'")
+          with("SET LOCAL lock_timeout = '10s'").
+          and_call_original
         migration.migrate(:up)
       end
 
@@ -159,9 +165,11 @@ RSpec.describe ActiveRecord::Migration do
       it 'runs migrate up without timeout' do
         migration = AddMonkey.new
         expect(ActiveRecord::Base.connection).to receive(:execute).
-          with("CREATE TABLE \"monkey\" (\"id\" serial primary key, \"created_at\" timestamp, \"updated_at\" timestamp) ")
+          with(/CREATE TABLE/).
+          and_call_original
         expect(ActiveRecord::Base.connection).not_to receive(:execute).
-          with("SET LOCAL lock_timeout = '5s'")
+          with("SET LOCAL lock_timeout = '5s'").
+          and_call_original
         migration.migrate(:up)
       end
 
@@ -202,8 +210,6 @@ RSpec.describe ActiveRecord::Migration do
         migration.migrate(:down)
       end
     end
+  end
 
-
-    end
 end
-
