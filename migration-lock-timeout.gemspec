@@ -29,7 +29,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "appraisal"
   spec.add_development_dependency "database_cleaner"
-  spec.add_development_dependency "pg"
+  spec.add_development_dependency "pg", "< 1.0"
   spec.add_development_dependency "pry"
   spec.add_development_dependency "rake", "~> 11.2.2"
   spec.add_development_dependency "rspec", "~> 3.0"
