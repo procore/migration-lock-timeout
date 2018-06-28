@@ -1,5 +1,6 @@
 require './spec_helper'
 require 'active_record'
+require 'strong_migrations' if Gem.loaded_specs.has_key? "strong_migrations"
 require_relative '../../lib/migration-lock-timeout'
 
 RSpec.describe ActiveRecord::Migration do
