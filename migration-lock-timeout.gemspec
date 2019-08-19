@@ -34,5 +34,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 11.2.2"
   spec.add_development_dependency "rspec", "~> 3.0"
 
-  spec.add_runtime_dependency "activerecord", ">= 4.0", "< 6.0"
+  spec.add_runtime_dependency "activerecord", ">= 4.0", "< 7.0"
 end
