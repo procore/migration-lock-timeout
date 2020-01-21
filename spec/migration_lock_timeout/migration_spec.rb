@@ -3,6 +3,28 @@ require 'active_record'
 require 'strong_migrations' if Gem.loaded_specs.has_key? "strong_migrations"
 require_relative '../../lib/migration-lock-timeout'
 
+ACTIVE_RECORD_MIGRATION_CLASS = if ActiveRecord::VERSION::STRING < "5.0"
+                                  ActiveRecord::Migration
+                                else
+                                  rails_version = ActiveRecord::VERSION::STRING.split(".")[0..1].join(".")
+                                  eval("ActiveRecord::Migration[#{rails_version}]")
+                                end
+
+def expect_create_table
+  if ActiveRecord::VERSION::STRING < "6.0"
+    expect(ActiveRecord::Base.connection).to receive(:execute).
+      with(/CREATE TABLE/).
+      and_call_original
+  else
+    expect(ActiveRecord::Base.connection).to receive(:execute).
+      with(/BEGIN/).
+      and_call_original
+    expect(ActiveRecord::Base.connection).to receive(:execute).
+      with(/CREATE TABLE/).
+      and_call_original
+  end
+end
+
 RSpec.describe ActiveRecord::Migration do
 
   describe '#migrate' do
@@ -15,7 +37,7 @@ RSpec.describe ActiveRecord::Migration do
 
     describe 'change migration' do
 
-      class AddFoo < ActiveRecord::Migration
+      class AddFoo < ACTIVE_RECORD_MIGRATION_CLASS
         def change
           create_table :foo do |t|
             t.timestamps
@@ -25,9 +47,7 @@ RSpec.describe ActiveRecord::Migration do
 
       it 'runs migrate up with timeout' do
         migration = AddFoo.new
-        expect(ActiveRecord::Base.connection).to receive(:execute).
-          with(/CREATE TABLE/).
-          and_call_original
+        expect_create_table
         expect(ActiveRecord::Base.connection).to receive(:execute).
           with("SET LOCAL lock_timeout = '5s'").
           and_call_original
@@ -52,7 +72,7 @@ RSpec.describe ActiveRecord::Migration do
 
     describe 'up / down migration' do
 
-      class AddBar < ActiveRecord::Migration
+      class AddBar < ACTIVE_RECORD_MIGRATION_CLASS
         def up
           create_table :bar do |t|
             t.timestamps
@@ -66,9 +86,7 @@ RSpec.describe ActiveRecord::Migration do
 
       it 'runs migrate up with timeout' do
         migration = AddBar.new
-        expect(ActiveRecord::Base.connection).to receive(:execute).
-          with(/CREATE TABLE/).
-          and_call_original
+        expect_create_table
         expect(ActiveRecord::Base.connection).to receive(:execute).
           with("SET LOCAL lock_timeout = '5s'").
           and_call_original
@@ -85,7 +103,7 @@ RSpec.describe ActiveRecord::Migration do
 
     describe 'disable lock timeout' do
 
-      class AddBaz < ActiveRecord::Migration
+      class AddBaz < ACTIVE_RECORD_MIGRATION_CLASS
         disable_lock_timeout!
         def up
           create_table :baz do |t|
@@ -116,7 +134,7 @@ RSpec.describe ActiveRecord::Migration do
 
     describe 'change lock timeout' do
 
-      class AddBurn < ActiveRecord::Migration
+      class AddBurn < ACTIVE_RECORD_MIGRATION_CLASS
         set_lock_timeout 10
         def up
           create_table :burn do |t|
@@ -131,9 +149,7 @@ RSpec.describe ActiveRecord::Migration do
 
       it 'runs migrate up with timeout' do
         migration = AddBurn.new
-        expect(ActiveRecord::Base.connection).to receive(:execute).
-          with(/CREATE TABLE/).
-          and_call_original
+        expect_create_table
         expect(ActiveRecord::Base.connection).to receive(:execute).
           with("SET LOCAL lock_timeout = '10s'").
           and_call_original
@@ -150,7 +166,7 @@ RSpec.describe ActiveRecord::Migration do
 
     describe 'with disable_ddl_transaction' do
 
-      class AddMonkey < ActiveRecord::Migration
+      class AddMonkey < ACTIVE_RECORD_MIGRATION_CLASS
         disable_ddl_transaction!
         def up
           create_table :monkey do |t|
@@ -165,9 +181,7 @@ RSpec.describe ActiveRecord::Migration do
 
       it 'runs migrate up without timeout' do
         migration = AddMonkey.new
-        expect(ActiveRecord::Base.connection).to receive(:execute).
-          with(/CREATE TABLE/).
-          and_call_original
+        expect_create_table
         expect(ActiveRecord::Base.connection).not_to receive(:execute).
           with("SET LOCAL lock_timeout = '5s'").
           and_call_original
@@ -184,7 +198,7 @@ RSpec.describe ActiveRecord::Migration do
 
     describe 'disable lock timeout' do
 
-      class AddBaz < ActiveRecord::Migration
+      class AddBaz < ACTIVE_RECORD_MIGRATION_CLASS
         disable_lock_timeout!
         def up
           create_table :baz do |t|
