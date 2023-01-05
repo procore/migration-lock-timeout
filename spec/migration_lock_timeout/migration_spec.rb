@@ -15,9 +15,16 @@ def expect_create_table
     expect(ActiveRecord::Base.connection).to receive(:execute).
       with(/CREATE TABLE/).
       and_call_original
-  else
+  elsif ActiveRecord::VERSION::STRING < "6.1.0"
     expect(ActiveRecord::Base.connection).to receive(:execute).
       with(/BEGIN/).
+      and_call_original
+    expect(ActiveRecord::Base.connection).to receive(:execute).
+      with(/CREATE TABLE/).
+      and_call_original
+  else
+    expect(ActiveRecord::Base.connection).to receive(:execute).
+      with('BEGIN', 'TRANSACTION').
       and_call_original
     expect(ActiveRecord::Base.connection).to receive(:execute).
       with(/CREATE TABLE/).
