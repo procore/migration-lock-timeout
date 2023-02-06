@@ -11,6 +11,7 @@ jobs:
         environment:
           POSTGRES_USER: ubuntu
           POSTGRES_DB: circle_test
+          POSTGRES_PASSWORD: $POSTGRES_DB_PASSWORD
     steps:
       - checkout
       - run:
@@ -22,7 +23,7 @@ jobs:
       - run:
           name: Run Appraisals Tests
           environment:
-            POSTGRES_DB_DATABASE: circle_test
             POSTGRES_DB_USERNAME: ubuntu
+            POSTGRES_DB_DATABASE: circle_test
             POSTGRES_DB_PASSWORD: $POSTGRES_DB_PASSWORD
           command: bundle exec appraisal rspec
