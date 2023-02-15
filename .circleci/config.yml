@@ -50,6 +50,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: 'Lock RubyVersion'
+          command: 'gem update --system 3.3.26'
+      - run:
           name: Install Ruby Dependencies
           command: bundle install
       - run:
