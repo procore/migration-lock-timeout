@@ -3,7 +3,11 @@ require 'active_record'
 require 'strong_migrations' if Gem.loaded_specs.has_key? 'strong_migrations'
 require_relative '../../lib/migration-lock-timeout'
 
-ACTIVE_RECORD_MIGRATION_CLASS = ActiveRecord::Migration[ActiveRecord::VERSION::STRING.to_f]
+ACTIVE_RECORD_MIGRATION_CLASS = if ActiveRecord.gem_version < '5.0'
+                                  ActiveRecord::Migration
+                                else
+                                  ActiveRecord::Migration[ActiveRecord::VERSION::STRING.to_f]
+                                end
 
 def expect_create_table
   if ActiveRecord.gem_version < '6.0'
