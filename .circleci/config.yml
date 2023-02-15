@@ -1,9 +1,44 @@
+# version: 2.1
+# jobs:
+#   build:
+#     # working_directory: ~/appName
+#     docker:
+#       - image: cimg/ruby:2.7.7
+#         environment:
+#           PG_HOST: localhost
+#           PG_USER: ubuntu
+#       - image: cimg/postgres:15.1
+#         environment:
+#           POSTGRES_USER: ubuntu
+#           POSTGRES_DB: circle_test
+#           POSTGRES_PASSWORD: $POSTGRES_DB_PASSWORD
+#     steps:
+#       - checkout
+#       - run:
+#           name: Install Ruby Dependencies
+#           command: bundle install
+#       - run:
+#           name: Install Appraisals Dependencies
+#           command: bundle exec appraisal install
+#       - run:
+#           name: Run Appraisals Tests
+#           environment:
+#             POSTGRES_DB_USERNAME: ubuntu
+#             POSTGRES_DB_DATABASE: circle_test
+#             POSTGRES_DB_PASSWORD: $POSTGRES_DB_PASSWORD
+#           command: bundle exec appraisal rspec
+
+
+
 version: 2.1
+
 jobs:
-  build:
-    # working_directory: ~/appName
+  test:
+    parameters:
+      ruby-version:
+        type: string
     docker:
-      - image: cimg/ruby:2.7.7
+      - image: cimg/ruby:<< parameters.ruby-version >>
         environment:
           PG_HOST: localhost
           PG_USER: ubuntu
@@ -27,3 +62,11 @@ jobs:
             POSTGRES_DB_DATABASE: circle_test
             POSTGRES_DB_PASSWORD: $POSTGRES_DB_PASSWORD
           command: bundle exec appraisal rspec
+
+workflows:
+  all-tests:
+    jobs:
+      - test:
+          matrix:
+            parameters:
+              ruby-version: ['2.7.7', '3.0.0']
