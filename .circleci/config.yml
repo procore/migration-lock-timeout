@@ -3,11 +3,11 @@ jobs:
   build:
     # working_directory: ~/appName
     docker:
-      - image: ruby:2.7.4
+      - image: cimg/ruby:3.2.1
         environment:
           PG_HOST: localhost
           PG_USER: ubuntu
-      - image: cimg/postgres:15
+      - image: cimg/postgres:15.1
         environment:
           POSTGRES_USER: ubuntu
           POSTGRES_DB: circle_test
