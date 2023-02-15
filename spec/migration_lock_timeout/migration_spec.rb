@@ -2,9 +2,9 @@ require './spec_helper'
 require 'active_record'
 require 'strong_migrations' if Gem.loaded_specs.has_key? 'strong_migrations'
 require_relative '../../lib/migration-lock-timeout'
-require 'pry'
-ACTIVE_RECORD_MIGRATION_CLASS = ActiveRecord::Migration["#{ActiveRecord::VERSION::MAJOR}.#{ActiveRecord::VERSION::MINOR}"]
-binding.pry
+
+ACTIVE_RECORD_MIGRATION_CLASS = ActiveRecord::Migration[ActiveRecord::VERSION::STRING.to_f]
+
 def expect_create_table
   if ActiveRecord.gem_version < '6.0'
     expect(ActiveRecord::Base.connection).to receive(:execute).
