@@ -1,6 +1,5 @@
 /.bundle/
 /.yardoc
-/Gemfile.lock
 /_yardoc/
 /coverage/
 /doc/
@@ -8,4 +7,3 @@
 /spec/reports/
 /tmp/
 *.gem
-/gemfiles/*.gemfile.lock
