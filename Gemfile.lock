@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     migration-lock-timeout (1.4.0)
-      activerecord (>= 4.0, < 8.0)
+      activerecord (>= 6.1, < 8.0)
 
 GEM
   remote: https://rubygems.org/
