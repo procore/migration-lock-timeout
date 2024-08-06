@@ -1,4 +1,6 @@
-require './spec_helper'
+# frozen_string_literal: true
+
+require_relative './spec_helper'
 require 'active_record'
 require 'strong_migrations' if Gem.loaded_specs.has_key? 'strong_migrations'
 require_relative '../../lib/migration-lock-timeout'
