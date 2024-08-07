@@ -16,7 +16,8 @@ module Foox
   end
 end
 if ActiveRecord.gem_version >= '7.1'
-  ActiveRecord::Migration.connection.prepend(Foox)
+  ActiveRecord::Base.establish_connection(:test)
+  ActiveRecord::Base.connection.prepend(Foox)
 end
 
 def expect_create_table
