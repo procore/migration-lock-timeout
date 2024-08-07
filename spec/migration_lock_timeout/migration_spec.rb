@@ -10,8 +10,8 @@ ACTIVE_RECORD_MIGRATION_CLASS = ActiveRecord::Migration[ActiveRecord::VERSION::S
 module Foox
   def execute(*args)
     puts '-' * 100
-    puts args
-    puts '-' * 100
+    ActiveRecord::Base.logger.info args.inspect
+    ActiveRecord::Base.logger.info 'x' * 100
     super
   end
 end
