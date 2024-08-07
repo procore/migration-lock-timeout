@@ -38,7 +38,7 @@ RSpec.describe ActiveRecord::Migration do
   before { ActiveRecord::Base.logger = Logger.new(STDOUT) }
   before(:suite) do
     if ActiveRecord.gem_version >= '7.1'
-      ActiveRecord::Base.connection.prepend(Foox)
+      ActiveRecord::Base.connection.class.prepend(Foox)
     end
   end
 
