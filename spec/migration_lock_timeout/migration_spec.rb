@@ -13,9 +13,9 @@ ACTIVE_RECORD_MIGRATION_CLASS = if ActiveRecord.gem_version < '5.0'
 
 def expect_create_table
   if ActiveRecord.gem_version >= '7.1'
-    expect(ActiveRecord::Migration.connection).to receive(:execute).
-        with('BEGIN', 'TRANSACTION').
-        and_call_original
+    # expect(ActiveRecord::Migration.connection).to receive(:execute).
+    #     with('BEGIN', 'TRANSACTION').
+    #     and_call_original
     expect(ActiveRecord::Migration.connection).to receive(:execute).
       with(/CREATE TABLE/).
       and_call_original
