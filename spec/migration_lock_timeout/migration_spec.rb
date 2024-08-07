@@ -15,6 +15,7 @@ module Foox
     super
   end
 end
+ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.prepend Foox
 
 def expect_create_table
   if ActiveRecord.gem_version >= '7.1'
@@ -36,11 +37,6 @@ end
 
 RSpec.describe ActiveRecord::Migration do
   before { ActiveRecord::Base.logger = Logger.new(STDOUT) }
-  before(:suite) do
-    if ActiveRecord.gem_version >= '7.1'
-      ActiveRecord::Base.connection.class.prepend(Foox)
-    end
-  end
 
   describe '#migrate' do
 
