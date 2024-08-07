@@ -7,6 +7,18 @@ require_relative '../../lib/migration-lock-timeout'
 
 ACTIVE_RECORD_MIGRATION_CLASS = ActiveRecord::Migration[ActiveRecord::VERSION::STRING.to_f]
 
+module Foox
+  def execute(*args)
+    puts '-' * 100
+    puts args
+    puts '-' * 100
+    super
+  end
+end
+if ActiveRecord.gem_version >= '7.1'
+  ActiveRecord::Migration.connection.prepend(Foox)
+end
+
 def expect_create_table
   if ActiveRecord.gem_version >= '7.1'
     #expect(ActiveRecord::Migration.connection).to receive(:execute).
