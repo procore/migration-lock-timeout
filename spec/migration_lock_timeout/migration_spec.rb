@@ -30,7 +30,8 @@ def expect_create_table
 end
 
 RSpec.describe ActiveRecord::Migration do
-
+  before { ActiveRecord::Base.logger = Logger.new(STDOUT) }
+  
   describe '#migrate' do
 
     before(:each) do
