@@ -7,12 +7,12 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (7.0.0)
-      activesupport (= 7.0.0)
-    activerecord (7.0.0)
-      activemodel (= 7.0.0)
-      activesupport (= 7.0.0)
-    activesupport (7.0.0)
+    activemodel (7.0.8.4)
+      activesupport (= 7.0.8.4)
+    activerecord (7.0.8.4)
+      activemodel (= 7.0.8.4)
+      activesupport (= 7.0.8.4)
+    activesupport (7.0.8.4)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
@@ -58,7 +58,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord (= 7.0.0)
+  activerecord (~> 7.0.1)
   appraisal
   database_cleaner
   migration-lock-timeout!
