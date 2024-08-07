@@ -15,10 +15,6 @@ module Foox
     super
   end
 end
-if ActiveRecord.gem_version >= '7.1'
-  ActiveRecord::Base.establish_connection(:test)
-  ActiveRecord::Base.connection.prepend(Foox)
-end
 
 def expect_create_table
   if ActiveRecord.gem_version >= '7.1'
@@ -40,7 +36,12 @@ end
 
 RSpec.describe ActiveRecord::Migration do
   before { ActiveRecord::Base.logger = Logger.new(STDOUT) }
-  
+  before(:suite) do
+    if ActiveRecord.gem_version >= '7.1'
+      ActiveRecord::Base.connection.prepend(Foox)
+    end
+  end
+
   describe '#migrate' do
 
     before(:each) do
