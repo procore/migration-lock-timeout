@@ -3,7 +3,7 @@ jobs:
   build:
     # working_directory: ~/appName
     docker:
-      - image: cimg/ruby:2.7.7
+      - image: cimg/ruby:3.1.6
         environment:
           PG_HOST: localhost
           PG_USER: ubuntu

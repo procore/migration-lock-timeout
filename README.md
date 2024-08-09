@@ -1,7 +1,5 @@
 # Migration Lock Timeout
 
-[![CircleCI](https://circleci.com/gh/procore/migration-lock-timeout/tree/master.svg?style=svg&circle-token=db5501175f384dfa477f8bfa2bdc628efe781e98)](https://circleci.com/gh/procore/migration-lock-timeout/tree/master)
-
 Migration Lock Timeout is a Ruby gem that adds a lock timeout to all Active
 Record migrations in your Ruby on Rails project. A lock timeout sets a timeout
 on how long PostgreSQL will wait to acquire a lock on tables being altered
@@ -104,11 +102,10 @@ The gem is available as open source under the terms of the [MIT License](http://
 
 ## About Procore
 
-<img
-  src="https://www.procore.com/images/procore_logo.png"
-  alt="Procore Logo"
-  width="250px"
-/>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/procore-oss/.github/blob/main/procoredarklogo.png?raw=true">
+  <img alt="Procore Open Source" src="https://raw.githubusercontent.com/procore-oss/.github/main/procorelightlogo.png">
+</picture>
 
 Migration Lock Timeout is maintained by Procore Technologies.
 
