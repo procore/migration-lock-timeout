@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
       - name: Check if version has been updated
         id: check
-        uses: tj-actions/changed-files@3c4bc6fa0ca4718d438e0a4bd3ea81fbb0e6e2be # v44
+        uses: tj-actions/changed-files@875e6e5df8b8b00995fe6f0afd7ff1531ac1c47d # v44
         with:
           files: lib/migration_lock_timeout/version.rb
   release:
